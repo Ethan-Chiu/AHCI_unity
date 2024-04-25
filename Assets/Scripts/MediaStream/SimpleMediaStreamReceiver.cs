@@ -3,7 +3,6 @@ using Unity.WebRTC;
 using UnityEngine;
 using UnityEngine.UI;
 using WebSocketSharp;
-using Newtonsoft.Json;
 
 public class SimpleMediaStreamReceiver : MonoBehaviour
 {
@@ -49,7 +48,7 @@ public class SimpleMediaStreamReceiver : MonoBehaviour
         ws.OnMessage += (sender, e) =>
         {
             Debug.Log("Reciever got: " + e.Data);
-            var signalingMessage = SignalingMessage.FromJson(e.Data);
+            var signalingMessage = SignalingMessage.FromJSON(e.Data);
 
             Debug.Log(signalingMessage.Type);
             Debug.Log(signalingMessage.Message);
@@ -58,7 +57,7 @@ public class SimpleMediaStreamReceiver : MonoBehaviour
             {
                 case SignalingMessageType.OFFER:
                     Debug.Log($"{clientId} - Got OFFER from Maximus: {signalingMessage.Message}");
-                    receivedOfferSessionDescTemp = JsonConvert.DeserializeObject<SessionDescription>(signalingMessage.Message);
+                    receivedOfferSessionDescTemp = SessionDescription.FromJSON(signalingMessage.Message);
                     hasReceivedOffer = true;
                     break;
                 case SignalingMessageType.CANDIDATE:
@@ -81,6 +80,7 @@ public class SimpleMediaStreamReceiver : MonoBehaviour
         ws.Connect();
 
         connection = new RTCPeerConnection();
+
         connection.OnIceCandidate = candidate =>
         {
             var candidateInit = new CandidateInit()
@@ -89,8 +89,14 @@ public class SimpleMediaStreamReceiver : MonoBehaviour
                 SdpMLineIndex = candidate.SdpMLineIndex ?? 0,
                 Candidate = candidate.Candidate
             };
-            ws.Send("CANDIDATE!" + candidateInit.ConvertToJSON());
+
+            var msg = new SignalingMessage();
+            msg.Type = SignalingMessageType.CANDIDATE;
+            msg.Message = candidateInit.ConvertToJSON();
+
+            ws.Send(msg.ConvertToJSON());
         };
+
         connection.OnIceConnectionChange = state =>
         {
             Debug.Log(state);
@@ -128,9 +134,13 @@ public class SimpleMediaStreamReceiver : MonoBehaviour
 
         var answerSessionDesc = new SessionDescription()
         {
-            SessionType = answerDesc.type.ToString(),
+            Type = SignalingMessageType.ANSWER,
             Sdp = answerDesc.sdp
         };
-        ws.Send("ANSWER!" + answerSessionDesc.ConvertToJSON());
+
+        var msg = new SignalingMessage();
+        msg.Type = SignalingMessageType.ANSWER;
+        msg.Message = answerSessionDesc.ConvertToJSON();
+        ws.Send(msg.ConvertToJSON());
     }
 }

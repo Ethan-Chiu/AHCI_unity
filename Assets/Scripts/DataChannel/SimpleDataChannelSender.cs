@@ -123,7 +123,7 @@ public class SimpleDataChannelSender : MonoBehaviour
 
         var offerSessionDesc = new SessionDescription()
         {
-            SessionType = offerDesc.type.ToString(),
+            Type = SignalingMessageType.OFFER,
             Sdp = offerDesc.sdp,
         };
         ws.Send("OFFER!" + offerSessionDesc.ConvertToJSON());

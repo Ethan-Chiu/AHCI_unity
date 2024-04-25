@@ -1,7 +1,5 @@
 using System;
 using Newtonsoft.Json;
-using System.Collections.Generic;
-using UnityEngine;
 using Newtonsoft.Json.Converters;
 
 
@@ -13,7 +11,12 @@ public class SignalingMessage
 
     public string Message;
 
-    public static SignalingMessage FromJson(string messageString)
+    public string ConvertToJSON()
+    {
+        return JsonConvert.SerializeObject(this);
+    }
+
+    public static SignalingMessage FromJSON(string messageString)
     {
         return JsonConvert.DeserializeObject<SignalingMessage>(messageString);
     }

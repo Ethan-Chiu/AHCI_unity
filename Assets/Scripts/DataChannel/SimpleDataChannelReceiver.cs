@@ -123,7 +123,7 @@ public class SimpleDataChannelReceiver : MonoBehaviour
 
         var answerSessionDesc = new SessionDescription()
         {
-            SessionType = answerDesc.type.ToString(),
+            Type = SignalingMessageType.ANSWER,
             Sdp = answerDesc.sdp,
         };
         ws.Send("ANSWER!" + answerSessionDesc.ConvertToJSON());

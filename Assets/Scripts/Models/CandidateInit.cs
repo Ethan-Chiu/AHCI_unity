@@ -1,21 +1,31 @@
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
-using UnityEngine;
 
 [Serializable]
-
 public class CandidateInit : IJsonObject<CandidateInit>
 {
+    [JsonConverter(typeof(StringEnumConverter)), JsonProperty("type")]
+    public SignalingMessageType Type = SignalingMessageType.CANDIDATE;
+
+    [JsonProperty("candidate")]
     public string Candidate;
+
+    [JsonProperty("id")]
     public string SdpMid;
+
+    [JsonProperty("label")]
     public int SdpMLineIndex;
 
-    public static CandidateInit FromJSON(string jsonString)
-    {
-        return JsonUtility.FromJson<CandidateInit>(jsonString);
-    }
 
     public string ConvertToJSON()
     {
-        return JsonUtility.ToJson(this);
+        return JsonConvert.SerializeObject(this);
     }
+
+    public static CandidateInit FromJSON(string jsonString)
+    {
+        return JsonConvert.DeserializeObject<CandidateInit>(jsonString);
+    }
+
 }

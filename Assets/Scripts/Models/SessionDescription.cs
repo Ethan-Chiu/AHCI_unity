@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using UnityEngine;
 
@@ -6,8 +7,8 @@ using UnityEngine;
 
 public class SessionDescription : IJsonObject<SessionDescription>
 {
-    [JsonProperty("type")]
-    public string SessionType;
+    [JsonConverter(typeof(StringEnumConverter)), JsonProperty("type")]
+    public SignalingMessageType Type;
 
     [JsonProperty("sdp")]
     public string Sdp;
@@ -15,11 +16,11 @@ public class SessionDescription : IJsonObject<SessionDescription>
     // Start is called before the first frame update
     public string ConvertToJSON()
     {
-        return JsonUtility.ToJson(this);
+        return JsonConvert.SerializeObject(this);
     }
 
     public static SessionDescription FromJSON(string jsonString)
     {
-        return JsonUtility.FromJson<SessionDescription>(jsonString);
+        return JsonConvert.DeserializeObject<SessionDescription>(jsonString);
     }
 }

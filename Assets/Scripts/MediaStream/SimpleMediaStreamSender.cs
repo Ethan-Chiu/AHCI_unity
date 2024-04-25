@@ -54,7 +54,7 @@ public class SimpleMediaStreamSender : MonoBehaviour
         ws.OnMessage += (sender, e) =>
         {
             Debug.Log(e.Data);
-            var signalingMessage = SignalingMessage.FromJson(e.Data);
+            var signalingMessage = SignalingMessage.FromJSON(e.Data);
 
             switch (signalingMessage.Type)
             {
@@ -125,7 +125,7 @@ public class SimpleMediaStreamSender : MonoBehaviour
 
         var offerSessionDesc = new SessionDescription()
         {
-            SessionType = offerDesc.type.ToString(),
+            Type = SignalingMessageType.OFFER,
             Sdp = offerDesc.sdp
         };
         ws.Send("OFFER!" + offerSessionDesc.ConvertToJSON());
