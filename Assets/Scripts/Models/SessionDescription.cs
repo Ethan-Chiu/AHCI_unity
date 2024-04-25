@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System;
 using UnityEngine;
 
@@ -5,7 +6,10 @@ using UnityEngine;
 
 public class SessionDescription : IJsonObject<SessionDescription>
 {
+    [JsonProperty("type")]
     public string SessionType;
+
+    [JsonProperty("sdp")]
     public string Sdp;
 
     // Start is called before the first frame update

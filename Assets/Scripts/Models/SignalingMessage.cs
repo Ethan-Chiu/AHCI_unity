@@ -1,24 +1,20 @@
 using System;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 using UnityEngine;
+using Newtonsoft.Json.Converters;
 
+
+[Serializable]
 public class SignalingMessage
 {
-    public readonly SignalingMessageType Type;
-    public readonly string Message;
+    [JsonConverter(typeof(StringEnumConverter))]
+    public SignalingMessageType Type;
 
-    public SignalingMessage(string messageString)
+    public string Message;
+
+    public static SignalingMessage FromJson(string messageString)
     {
-        var messageArray = messageString.Split("!");
-
-        if (messageArray.Length < 2)
-        {
-            Type = SignalingMessageType.OTHER;
-            Message = messageString;
-        }
-        else if (Enum.TryParse(messageArray[0], out SignalingMessageType resultType))
-        {
-            Type = resultType;
-            Message = messageArray[1];
-        }
+        return JsonConvert.DeserializeObject<SignalingMessage>(messageString);
     }
 }

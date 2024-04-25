@@ -8,7 +8,7 @@ public class SimpleMediaStreamSender : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField] private Camera cameraStream;
-    [SerializeField] private RawImage sourceImage;
+    // [SerializeField] private RawImage sourceImage;
 
     private RTCPeerConnection connection;
     private MediaStream videoStream;
@@ -53,7 +53,8 @@ public class SimpleMediaStreamSender : MonoBehaviour
 
         ws.OnMessage += (sender, e) =>
         {
-            var signalingMessage = new SignalingMessage(e.Data);
+            Debug.Log(e.Data);
+            var signalingMessage = SignalingMessage.FromJson(e.Data);
 
             switch (signalingMessage.Type)
             {
@@ -107,7 +108,7 @@ public class SimpleMediaStreamSender : MonoBehaviour
         };
 
         videoStreamTrack = cameraStream.CaptureStreamTrack(1280, 720);
-        sourceImage.texture = cameraStream.targetTexture;
+        // sourceImage.texture = cameraStream.targetTexture;
         connection.AddTrack(videoStreamTrack);
 
         StartCoroutine(WebRTC.Update());

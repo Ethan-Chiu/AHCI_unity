@@ -1,9 +1,9 @@
 using System.Collections;
 using Unity.WebRTC;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 using WebSocketSharp;
+using Newtonsoft.Json;
 
 public class SimpleMediaStreamReceiver : MonoBehaviour
 {
@@ -48,13 +48,17 @@ public class SimpleMediaStreamReceiver : MonoBehaviour
 
         ws.OnMessage += (sender, e) =>
         {
-            var signalingMessage = new SignalingMessage(e.Data);
+            Debug.Log("Reciever got: " + e.Data);
+            var signalingMessage = SignalingMessage.FromJson(e.Data);
+
+            Debug.Log(signalingMessage.Type);
+            Debug.Log(signalingMessage.Message);
 
             switch (signalingMessage.Type)
             {
                 case SignalingMessageType.OFFER:
                     Debug.Log($"{clientId} - Got OFFER from Maximus: {signalingMessage.Message}");
-                    receivedOfferSessionDescTemp = SessionDescription.FromJSON(signalingMessage.Message);
+                    receivedOfferSessionDescTemp = JsonConvert.DeserializeObject<SessionDescription>(signalingMessage.Message);
                     hasReceivedOffer = true;
                     break;
                 case SignalingMessageType.CANDIDATE:
@@ -127,6 +131,6 @@ public class SimpleMediaStreamReceiver : MonoBehaviour
             SessionType = answerDesc.type.ToString(),
             Sdp = answerDesc.sdp
         };
-        ws.Send("OFFER!" + answerSessionDesc.ConvertToJSON());
+        ws.Send("ANSWER!" + answerSessionDesc.ConvertToJSON());
     }
 }
