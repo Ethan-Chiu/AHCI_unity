@@ -6,7 +6,8 @@ using WebSocketSharp;
 
 public class SimpleMediaStreamReceiver : MonoBehaviour
 {
-    [SerializeField] private RawImage receiveImage;
+    // [SerializeField] private RawImage receiveImage;
+    public string serverIp;
 
     private RTCPeerConnection connection;
 
@@ -18,7 +19,7 @@ public class SimpleMediaStreamReceiver : MonoBehaviour
 
     private void Start()
     {
-        InitClient("192.168.137.1", 8080);
+        InitClient(serverIp, 8080);
     }
 
     private void Update()
@@ -108,7 +109,8 @@ public class SimpleMediaStreamReceiver : MonoBehaviour
             {
                 video.OnVideoReceived += tex =>
                 {
-                    receiveImage.texture = tex;
+                    GetComponent<MeshRenderer>().material.SetTexture("_BaseTexture", tex);
+                    // receiveImage.texture = tex;
                 };
             }
         };
