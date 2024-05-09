@@ -3,12 +3,11 @@ using Unity.WebRTC;
 using UnityEngine;
 using UnityEngine.UI;
 using WebSocketSharp;
+using System.Net.Sockets;
+using System.Net;
 
 public class SimpleMediaStreamReceiver : MonoBehaviour
 {
-    // [SerializeField] private RawImage receiveImage;
-    public string serverIp;
-
     private RTCPeerConnection connection;
 
     private WebSocket ws;
@@ -19,7 +18,24 @@ public class SimpleMediaStreamReceiver : MonoBehaviour
 
     private void Start()
     {
-        InitClient(serverIp, 8080);
+        string serverIpv4Address = "";
+        var host = Dns.GetHostEntry(Dns.GetHostName());
+        foreach (var ip in host.AddressList)
+        {
+            if (ip.AddressFamily == AddressFamily.InterNetwork)
+            {
+                serverIpv4Address = ip.ToString();
+                break;
+            }
+        }
+
+        if (serverIpv4Address == "")
+        {
+            Debug.Log("No intern host address found");
+        }
+        Debug.Log(serverIpv4Address);
+
+        InitClient(serverIpv4Address, 8080);
     }
 
     private void Update()
