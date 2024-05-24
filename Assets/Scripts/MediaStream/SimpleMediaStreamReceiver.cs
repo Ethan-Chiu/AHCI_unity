@@ -62,6 +62,8 @@ public class SimpleMediaStreamReceiver : MonoBehaviour
         Debug.Log("Reciever endpoint " + endpoint);
         ws = new WebSocket(endpoint);
 
+        bool firstTrack = true;
+
         ws.OnMessage += (sender, e) =>
         {
             Debug.Log("Reciever got: " + e.Data);
@@ -121,13 +123,25 @@ public class SimpleMediaStreamReceiver : MonoBehaviour
 
         connection.OnTrack = e =>
         {
+            
             if (e.Track is VideoStreamTrack video)
             {
-                video.OnVideoReceived += tex =>
+                Debug.Log("video" + video.ToString() + " id " + video.Id);
+                if (firstTrack)
                 {
-                    GetComponent<MeshRenderer>().material.SetTexture("_BaseTexture", tex);
-                    // receiveImage.texture = tex;
-                };
+                    video.OnVideoReceived += tex =>
+                    {
+                        GetComponent<MeshRenderer>().material.SetTexture("_CamTexture", tex);
+                    };
+                    firstTrack = false;
+                }
+                else
+                {
+                    video.OnVideoReceived += tex =>
+                    {
+                        GetComponent<MeshRenderer>().material.SetTexture("_MaskTexture", tex);
+                    };
+                }
             }
         };
 
