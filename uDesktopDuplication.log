@@ -1,15 +1,15 @@
-[uDD::Log][2024-05-23 21:23:45] Start
-[uDD::Log][2024-05-23 21:23:45] OS Version    : 10.0
-[uDD::Log][2024-05-23 21:23:45] Build Number  : 19045
-[uDD::Log][2024-05-23 21:23:45] Service Pack  : 
-[uDD::Log][2024-05-23 21:23:45] Graphics Card [0] : AMD Radeon Pro 5300M
-[uDD::Log][2024-05-23 21:23:45]   > Monitor[0] : \\.\DISPLAY1
-[uDD::Log][2024-05-23 21:23:45] Graphics Card [1] : AMD Radeon Pro 5300M
-[uDD::Log][2024-05-23 21:23:45] Graphics Card [2] : Microsoft Basic Render Driver
-[uDD::Log][2024-05-23 21:23:45] Monitor::Initialized() =>
-[uDD::Log][2024-05-23 21:23:45]     ID    : 0
-[uDD::Log][2024-05-23 21:23:45]     Size  : (3072, 1920)
-[uDD::Log][2024-05-23 21:23:45]     DPI   : (226, 226)
-[uDD::Log][2024-05-23 21:23:45]     Rot   : Landscape
-[uDD::Log][2024-05-23 21:23:45] Duplicator::Initialize() => OK.
-[uDD::Log][2024-05-23 21:26:44] Stop
+[uDD::Log][2024-05-27 04:45:56] Start
+[uDD::Log][2024-05-27 04:45:56] OS Version    : 10.0
+[uDD::Log][2024-05-27 04:45:56] Build Number  : 19045
+[uDD::Log][2024-05-27 04:45:56] Service Pack  : 
+[uDD::Log][2024-05-27 04:45:56] Graphics Card [0] : AMD Radeon Pro 5300M
+[uDD::Log][2024-05-27 04:45:56]   > Monitor[0] : \\.\DISPLAY1
+[uDD::Log][2024-05-27 04:45:56] Graphics Card [1] : AMD Radeon Pro 5300M
+[uDD::Log][2024-05-27 04:45:56] Graphics Card [2] : Microsoft Basic Render Driver
+[uDD::Log][2024-05-27 04:45:56] Monitor::Initialized() =>
+[uDD::Log][2024-05-27 04:45:56]     ID    : 0
+[uDD::Log][2024-05-27 04:45:56]     Size  : (3072, 1920)
+[uDD::Log][2024-05-27 04:45:56]     DPI   : (226, 226)
+[uDD::Log][2024-05-27 04:45:56]     Rot   : Landscape
+[uDD::Log][2024-05-27 04:45:56] Duplicator::Initialize() => OK.
+[uDD::Log][2024-05-27 04:49:27] Stop
