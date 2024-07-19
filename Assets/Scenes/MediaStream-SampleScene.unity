@@ -281,6 +281,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d9b49cae2b0941458c125fa4ca9f05c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mat: {fileID: -876546973899608171, guid: fd798353cb964584ab0e4e33f498fb49, type: 3}
 --- !u!1 &280219911
 GameObject:
   m_ObjectHideFlags: 0
@@ -326,9 +327,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ovrCameraRig: {fileID: 806364007}
-  trackObject: {fileID: 1955500033}
   planeObject: {fileID: 119677799}
   blackDot: {fileID: 1215398998}
+  positionOffset: {x: -0.1, y: 0, z: -0.1}
+  skeleton: {fileID: 624599316}
   mat: {fileID: -876546973899608171, guid: fd798353cb964584ab0e4e33f498fb49, type: 3}
   pos: {x: 0, y: 0}
 --- !u!4 &439958860 stripped
@@ -1391,6 +1393,7 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
   threshold: 0.04
+  mat: {fileID: -876546973899608171, guid: fd798353cb964584ab0e4e33f498fb49, type: 3}
 --- !u!4 &1338513153
 Transform:
   m_ObjectHideFlags: 0

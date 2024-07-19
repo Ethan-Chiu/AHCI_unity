@@ -5,6 +5,7 @@ using WebSocketSharp;
 using System.Net.Sockets;
 using System.Net;
 using System.Collections.Generic;
+using Unity.Mathematics;
 
 public class SendHandData : MonoBehaviour
 {
@@ -21,6 +22,7 @@ public class SendHandData : MonoBehaviour
     public List<Gesture> gestures;
 
     public float threshold = 0.04f;
+    public Material mat;
 
     // private List<Vector3> leftJointPos;
     private List<Vector3> rightJointPos = new List<Vector3>();
@@ -57,7 +59,7 @@ public class SendHandData : MonoBehaviour
     void Update()
     {
         var handData = "";
-        this.rightJointPos.Clear();
+        rightJointPos.Clear();
         for (HandJointId jointId = HandJointId.HandStart; jointId < HandJointId.HandEnd; jointId++)
         {
             leftHand.GetJointPose(jointId, out currentLeftPose);
@@ -83,6 +85,15 @@ public class SendHandData : MonoBehaviour
         if ( hasRecognized )
         {
             Debug.Log(currentGesture.name);
+        }
+
+        if (mat != null)
+        {
+            mat.SetFloat("_TorchMode", hasRecognized ? 1.0f : 0.0f);
+        }
+        else
+        {
+            Debug.Log("no mat no mat");
         }
 
         ws.Send(handData);

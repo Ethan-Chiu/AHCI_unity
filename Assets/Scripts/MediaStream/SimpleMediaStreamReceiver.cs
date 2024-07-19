@@ -8,6 +8,8 @@ using System.Net;
 
 public class SimpleMediaStreamReceiver : MonoBehaviour
 {
+    public Material mat;
+
     private RTCPeerConnection connection;
 
     private WebSocket ws;
@@ -131,7 +133,7 @@ public class SimpleMediaStreamReceiver : MonoBehaviour
                 {
                     video.OnVideoReceived += tex =>
                     {
-                        GetComponent<MeshRenderer>().material.SetTexture("_CamTexture", tex);
+                        mat.SetTexture("_CamTexture", tex);
                     };
                     firstTrack = false;
                 }
@@ -139,7 +141,7 @@ public class SimpleMediaStreamReceiver : MonoBehaviour
                 {
                     video.OnVideoReceived += tex =>
                     {
-                        GetComponent<MeshRenderer>().material.SetTexture("_MaskTexture", tex);
+                        mat.SetTexture("_MaskTexture", tex);
                     };
                 }
             }

@@ -5,9 +5,11 @@ using UnityEngine;
 public class MoveBlackDot : MonoBehaviour
 {
     public OVRCameraRig ovrCameraRig;
-    public GameObject trackObject;
     public GameObject planeObject; // The GameObject representing the plane
     public GameObject blackDot;
+
+    public Vector3 positionOffset = new Vector3(0, 0.1f, 0.1f);
+    public OVRSkeleton skeleton;
 
     public Material mat;
 
@@ -40,7 +42,7 @@ public class MoveBlackDot : MonoBehaviour
 
         Vector3 planeNormal = planeObject.transform.forward;
         planeNormal.Normalize();
-        Vector3 pointToProject = trackObject.transform.position;
+        Vector3 pointToProject = skeleton.transform.position + positionOffset;
 
         Vector3 planePos = planeObject.transform.position;
         Vector3 cameraPoint = centerEyeAnchor.position;
