@@ -21,15 +21,17 @@ public class GestureDetector : MonoBehaviour
 
     private List<OVRBone> fingerBones;
     private Gesture previousGesture;
+    private Vector3 previousPosition;
     private bool ready = false;
 
-    public Material mat;
+    // public Material mat;
 
     // Start is called before the first frame update
     IEnumerator Start()
     {
         while (skeleton.Bones.Count == 0)
         {
+            Debug.Log("No bone");
             yield return null;
         }
         fingerBones = new List<OVRBone>(skeleton.Bones);
@@ -50,20 +52,23 @@ public class GestureDetector : MonoBehaviour
         }
         Gesture currentGesture = Recognize();
         bool hasRecognized = !currentGesture.Equals(new Gesture());
-        if (mat != null)
+        
+        /*if (mat != null)
         {
-            mat.SetFloat("_TorchMode", hasRecognized ? 1.0f : 0.0f);
+            bool torchMode = hasRecognized && previousPosition != skeleton.transform.position;
+            mat.SetFloat("_TorchMode", torchMode ? 1.0f : 0.0f);
         }
         else
         {
             Debug.Log("no mat no mat");
-        }
+        }*/
 
         if(currentGesture.name == "OK")
         {
             Debug.Log("New Gesture Found: " + currentGesture.name + " " + skeleton.transform.position);
             transform.position = skeleton.transform.position + positionOffset;
             previousGesture = currentGesture;
+            previousPosition = skeleton.transform.position;
             currentGesture.onRecognized.Invoke();
         }
     }

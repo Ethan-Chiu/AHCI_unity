@@ -60,9 +60,6 @@ public class MoveBlackDot : MonoBehaviour
         float upDis = Vector3.Dot(dis, planeObject.transform.up) / scale.x;
         float rightDis = Vector3.Dot(dis, planeObject.transform.right) / scale.y;
 
-        Debug.Log("upDis" + upDis);
-        Debug.Log("rightDis" + rightDis);
-
         if (mat != null)
         {
             mat.SetVector("_Offset", new Vector2(rightDis, upDis));
@@ -72,7 +69,8 @@ public class MoveBlackDot : MonoBehaviour
             Debug.Log("no mat no mat");
         }
 
-        blackDot.transform.position = planePoint;
+        if ( !(float.IsNaN(planePoint.x) || float.IsNaN(planePoint.y) || float.IsNaN(planePoint.z)) )
+            blackDot.transform.position = planePoint;
 
         /* float xDis = (dis.x) / scale.x;
         float yDis = (dis.y) / scale.y;

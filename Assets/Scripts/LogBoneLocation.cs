@@ -4,6 +4,7 @@ using UnityEngine;
 using WebSocketSharp;
 using System.Net.Sockets;
 using System.Net;
+using System.Collections.Generic;
 
 public class SendHandData : MonoBehaviour
 {
@@ -16,6 +17,13 @@ public class SendHandData : MonoBehaviour
     [SerializeField]
     private GameObject head;
 
+    public OVRSkeleton skeleton;
+    public List<Gesture> gestures;
+
+    public float threshold = 0.04f;
+
+    // private List<Vector3> leftJointPos;
+    private List<Vector3> rightJointPos = new List<Vector3>();
 
     private Pose currentLeftPose;
     private Pose currentRightPose;
@@ -49,6 +57,7 @@ public class SendHandData : MonoBehaviour
     void Update()
     {
         var handData = "";
+        this.rightJointPos.Clear();
         for (HandJointId jointId = HandJointId.HandStart; jointId < HandJointId.HandEnd; jointId++)
         {
             leftHand.GetJointPose(jointId, out currentLeftPose);
@@ -57,10 +66,24 @@ public class SendHandData : MonoBehaviour
                 + "left:" + currentLeftPose.position + currentLeftPose.rotation + "; "
                 + "right:" + currentRightPose.position + currentRightPose.rotation + ";");
             handData += "\n";
+            // leftJointPos[((int)jointId)] = currentLeftPose.position;
+            rightJointPos.Add(currentRightPose.position);
         }
         var headData = "head_pos:" + head.transform.position + "; "
                 + "head_rot:" + head.transform.rotation + ";";
         handData += headData + "\n\n";
+
+        Debug.Log(handData);
+
+        Gesture currentGesture = Recognize();
+        bool hasRecognized = !currentGesture.Equals(new Gesture());
+
+        Debug.Log(hasRecognized);
+
+        if ( hasRecognized )
+        {
+            Debug.Log(currentGesture.name);
+        }
 
         ws.Send(handData);
     }
@@ -80,5 +103,34 @@ public class SendHandData : MonoBehaviour
             Debug.Log("Reciever got: " + e.Data);
         };
         ws.Connect();
+    }
+
+    Gesture Recognize()
+    {
+        Gesture currentgesture = new Gesture();
+        float currentMin = Mathf.Infinity;
+
+        foreach (var gesture in gestures)
+        {
+            float sumDistance = 0;
+            bool isDiscarded = false;
+            for (int i = 0; i < rightJointPos.Count; i++)
+            {
+                Vector3 currentData = skeleton.transform.InverseTransformPoint(rightJointPos[i]);
+                float distance = Vector3.Distance(currentData, gesture.fingerDatas[i]);
+                if (distance > threshold)
+                {
+                    isDiscarded = true;
+                    break;
+                }
+                sumDistance += distance;
+            }
+            if (!isDiscarded && sumDistance < currentMin)
+            {
+                currentMin = sumDistance;
+                currentgesture = gesture;
+            }
+        }
+        return currentgesture;
     }
 }

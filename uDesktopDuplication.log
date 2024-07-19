@@ -1,15 +1,14 @@
-[uDD::Log][2024-05-27 04:45:56] Start
-[uDD::Log][2024-05-27 04:45:56] OS Version    : 10.0
-[uDD::Log][2024-05-27 04:45:56] Build Number  : 19045
-[uDD::Log][2024-05-27 04:45:56] Service Pack  : 
-[uDD::Log][2024-05-27 04:45:56] Graphics Card [0] : AMD Radeon Pro 5300M
-[uDD::Log][2024-05-27 04:45:56]   > Monitor[0] : \\.\DISPLAY1
-[uDD::Log][2024-05-27 04:45:56] Graphics Card [1] : AMD Radeon Pro 5300M
-[uDD::Log][2024-05-27 04:45:56] Graphics Card [2] : Microsoft Basic Render Driver
-[uDD::Log][2024-05-27 04:45:56] Monitor::Initialized() =>
-[uDD::Log][2024-05-27 04:45:56]     ID    : 0
-[uDD::Log][2024-05-27 04:45:56]     Size  : (3072, 1920)
-[uDD::Log][2024-05-27 04:45:56]     DPI   : (226, 226)
-[uDD::Log][2024-05-27 04:45:56]     Rot   : Landscape
-[uDD::Log][2024-05-27 04:45:56] Duplicator::Initialize() => OK.
-[uDD::Log][2024-05-27 04:49:27] Stop
+[uDD::Log][2024-07-14 01:49:37] Start
+[uDD::Log][2024-07-14 01:49:37] OS Version    : 10.0
+[uDD::Log][2024-07-14 01:49:37] Build Number  : 22631
+[uDD::Log][2024-07-14 01:49:37] Service Pack  : 
+[uDD::Log][2024-07-14 01:49:37] Graphics Card [0] : NVIDIA GeForce RTX 2080 SUPER
+[uDD::Log][2024-07-14 01:49:37]   > Monitor[0] : \\.\DISPLAY1
+[uDD::Log][2024-07-14 01:49:37] Graphics Card [1] : Microsoft Basic Render Driver
+[uDD::Log][2024-07-14 01:49:37] Monitor::Initialized() =>
+[uDD::Log][2024-07-14 01:49:37]     ID    : 0
+[uDD::Log][2024-07-14 01:49:37]     Size  : (3840, 2160)
+[uDD::Log][2024-07-14 01:49:37]     DPI   : (139, 139)
+[uDD::Log][2024-07-14 01:49:37]     Rot   : Landscape
+[uDD::Log][2024-07-14 01:49:37] Duplicator::Initialize() => OK.
+[uDD::Log][2024-07-14 01:51:54] Stop
