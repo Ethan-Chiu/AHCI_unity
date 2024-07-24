@@ -24,6 +24,9 @@ public class SendHandData : MonoBehaviour
     public float threshold = 0.04f;
     public Material mat;
 
+    public GameObject projectHnadObject;
+    private ProjectPoint projectHandScript;
+
     // private List<Vector3> leftJointPos;
     private List<Vector3> rightJointPos = new List<Vector3>();
 
@@ -54,6 +57,8 @@ public class SendHandData : MonoBehaviour
 
         InitClient(serverIpv4Address, 8080);
         ws.Send("Time!" + DateTime.Now.ToString());
+
+        projectHandScript = projectHnadObject.GetComponent<ProjectPoint>();
     }
 
     void Update()
@@ -85,6 +90,9 @@ public class SendHandData : MonoBehaviour
         if ( hasRecognized )
         {
             Debug.Log(currentGesture.name);
+            handData += "torch";
+            handData += (projectHandScript.projectedPos[0].ToString() + "," + 
+                projectHandScript.projectedPos[1].ToString());
         }
 
         if (mat != null)
