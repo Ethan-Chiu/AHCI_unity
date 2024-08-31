@@ -36,6 +36,9 @@ public class SendHandData : MonoBehaviour
     private WebSocket ws;
     private string clientId;
 
+    private float timer = 0.0f;
+    public float interval = 0.1f; // Time interval in seconds
+
     private void Start()
     {
         string serverIpv4Address = "";
@@ -63,48 +66,58 @@ public class SendHandData : MonoBehaviour
 
     void Update()
     {
-        var handData = "";
-        rightJointPos.Clear();
-        for (HandJointId jointId = HandJointId.HandStart; jointId < HandJointId.HandEnd; jointId++)
+        timer += Time.deltaTime;
+        if (timer >= interval)
         {
-            leftHand.GetJointPose(jointId, out currentLeftPose);
-            rightHand.GetJointPose(jointId, out currentRightPose);
-            handData += (jointId.ToString() + "; "
-                + "left:" + currentLeftPose.position + currentLeftPose.rotation + "; "
-                + "right:" + currentRightPose.position + currentRightPose.rotation + ";");
-            handData += "\n";
-            // leftJointPos[((int)jointId)] = currentLeftPose.position;
-            rightJointPos.Add(currentRightPose.position);
+            var handData = "";
+            DateTime currentTime = DateTime.UtcNow;
+            long ticks = currentTime.Ticks;
+            handData += ticks.ToString();
+            handData += "time";
+            rightJointPos.Clear();
+            for (HandJointId jointId = HandJointId.HandStart; jointId < HandJointId.HandEnd; jointId++)
+            {
+                leftHand.GetJointPose(jointId, out currentLeftPose);
+                rightHand.GetJointPose(jointId, out currentRightPose);
+                handData += (jointId.ToString() + "; "
+                    + "left:" + currentLeftPose.position + currentLeftPose.rotation + "; "
+                    + "right:" + currentRightPose.position + currentRightPose.rotation + ";");
+                handData += "\n";
+                // leftJointPos[((int)jointId)] = currentLeftPose.position;
+                rightJointPos.Add(currentRightPose.position);
+            }
+            var headData = "head_pos:" + head.transform.position + "; "
+                    + "head_rot:" + head.transform.rotation + ";";
+            handData += headData + "\n\n";
+
+            //Debug.Log(handData);
+
+            Gesture currentGesture = Recognize();
+            bool hasRecognized = !currentGesture.Equals(new Gesture());
+
+            Debug.Log(hasRecognized);
+
+            if ( hasRecognized )
+            {
+                Debug.Log(currentGesture.name);
+                handData += "torch";
+                handData += (projectHandScript.projectedPos[0].ToString() + "," + 
+                    projectHandScript.projectedPos[1].ToString());
+                Debug.Log(handData);
+            }
+
+            if (mat != null)
+            {
+                mat.SetFloat("_TorchMode", hasRecognized ? 1.0f : 0.0f);
+            }
+            else
+            {
+                Debug.Log("no mat no mat");
+            }
+        
+            ws.Send(handData);
+            timer = 0.0f;
         }
-        var headData = "head_pos:" + head.transform.position + "; "
-                + "head_rot:" + head.transform.rotation + ";";
-        handData += headData + "\n\n";
-
-        Debug.Log(handData);
-
-        Gesture currentGesture = Recognize();
-        bool hasRecognized = !currentGesture.Equals(new Gesture());
-
-        Debug.Log(hasRecognized);
-
-        if ( hasRecognized )
-        {
-            Debug.Log(currentGesture.name);
-            handData += "torch";
-            handData += (projectHandScript.projectedPos[0].ToString() + "," + 
-                projectHandScript.projectedPos[1].ToString());
-        }
-
-        if (mat != null)
-        {
-            mat.SetFloat("_TorchMode", hasRecognized ? 1.0f : 0.0f);
-        }
-        else
-        {
-            Debug.Log("no mat no mat");
-        }
-
-        ws.Send(handData);
     }
 
     public void InitClient(string serverIp, int serverPort)
